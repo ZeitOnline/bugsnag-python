@@ -89,3 +89,14 @@ class BugsnagMiddleware(object):
 
     def __call__(self, environ, start_response):
         return WrappedWSGIApp(self.application, environ, start_response)
+
+
+def bugsnag_filter(global_conf, **local_conf):
+    if 'notify_release_stages' in local_conf:
+        local_conf['notify_release_stages'] = local_conf[
+            'notify_release_stages'].split(',')
+    bugsnag.configure(**local_conf)
+
+    def bugsnag_filter(app):
+        return BugsnagMiddleware(app)
+    return bugsnag_filter

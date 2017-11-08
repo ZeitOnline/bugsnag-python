@@ -43,4 +43,9 @@ setup(
     extras_require={
         'flask': ['flask', 'blinker']
     },
+    entry_points={
+        'paste.filter_factory': [
+            'bugsnag=bugsnag.wsgi.middleware:bugsnag_filter',
+        ]
+    },
 )
